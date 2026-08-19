@@ -237,6 +237,7 @@ type RunListItem {
 
 type RunError {
   user: PublicUser!
+  vault: HostedVault
   timestamp: String!
   message: String!
 }
@@ -290,7 +291,7 @@ type Mutation {
   vaultHeartbeat(heartbeat: VaultHeartbeatInput!): Boolean!
   # used by federated clients
   reportRunReady(runId: String!, resolvedImage: ResolvedComputationImageInput!): Boolean!
-  reportRunError(runId: String!, errorMessage: String!, redactErrorDetails: Boolean = false): Boolean!
+  reportRunError(runId: String!, vaultId: String, errorMessage: String!, redactErrorDetails: Boolean = true): Boolean!
   reportRunComplete(runId: String!): Boolean!
   reportRunStatus(runId: String!, status: String!): Boolean!
   # used by desktop App
@@ -338,6 +339,7 @@ type Mutation {
     description: String!
   ): Boolean!
   adminDeleteVaultServer(serverId: String!): Boolean!
+  adminRotateVaultToken(serverId: String!): String!
   adminSetHostedVaultAllowedComputations(
     vaultId: String!
     computationIds: [String!]!
